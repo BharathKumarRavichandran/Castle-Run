@@ -5,8 +5,8 @@ var canvasWidth = 1100;
 var canvasHeight = 600;
 var spriteWidth = 1400;
 var spriteHeight = 770;
-var rows;
-var cols;
+var rows=2;
+var cols=5;
 var curFrame=0;
 var frameCount;
 var x=0;
@@ -31,7 +31,7 @@ pipeRed.src = "pipe-red.png";
 var gameOver = new Audio("gameOver.mp3");
 var jump = new Audio("jump.wav");
 
-ctx.drawImage(bg,x,y/*,canvasWidth,canvasHeight*/ );
+ctx.drawImage(bg,x,y,canvasWidth,canvasHeight);
 
 alert("hello");
 
