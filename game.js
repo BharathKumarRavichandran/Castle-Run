@@ -31,6 +31,11 @@ pipeRed.src = "pipe-red.png";
 var gameOver = new Audio("gameOver.mp3");
 var jump = new Audio("jump.wav");
 
+function stopAudio(audio) {    //Function to stop audio the current audio from playing
+    audio.pause();
+    audio.currentTime = 0;
+}
+
 ctx.drawImage(bg,x,y,canvasWidth,canvasHeight);
 
 alert("hello");
