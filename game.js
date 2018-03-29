@@ -9,9 +9,9 @@ var baseWidth = 336;
 var baseHeight = 112;
 var cartWidth = 100;
 var cartHeight = 100;
-var charX = 60;
+var charX = 50;
 var charY = canvasHeight-baseHeight-80;
-var cartX = 400;
+var cartX = canvasWidth+50;
 var cartY = charY+45;
 var rows=2;
 var cols=5;
@@ -49,17 +49,59 @@ var dead = new Audio("audio/dead.wav");
 var gameOver = new Audio("audio/gameOver.mp3");
 var jump = new Audio("audio/jump.wav");
 
+function start(){
 
+	var dx = -3;
+	var pause = false;
+	var score = 0;
 
-function stopAudio(audio) {    //Function to stop audio the current audio from playing
-    audio.pause();
-    audio.currentTime = 0;
+	function stopAudio(audio) {    //Function to stop audio the current audio from playing
+	    audio.pause();
+	    audio.currentTime = 0;
+	}
+
+	score = 0;
+
+	function draw(){
+		var pat1 = ctx.createPattern(bg1,"repeat");
+		ctx.rect(0,0,canvasWidth,canvasHeight-baseHeight+50);
+		ctx.fillStyle = pat1;
+		ctx.fill();
+		ctx.drawImage(base,0,canvasHeight-baseHeight+50,canvasWidth,100);
+		ctx.drawImage(character,srcX,srcY,charWidth,charHeight,charX,charY,150,150);
+		ctx.drawImage(hayCart,cartX,cartY,cartWidth,cartHeight);
+
+		cartX += dx;
+
+		if(pause==true){
+
+			ctx.fillStyle = "#000000";
+			ctx.globalAlpha = 0.6;
+			ctx.fillRect(400,180,450,250);
+			ctx.globalAlpha = 1;
+			ctx.fillStyle = "#FF0000";
+			ctx.font = "35px Arial";
+			ctx.fillText("GAME OVER",520,250);
+			ctx.font = "25px Arial";
+			ctx.fillStyle = "#FFFFFF";
+			ctx.fillText("Score : "+score,570,300);
+			ctx.fillText("Press R to restart",530,350);
+			dead.play();
+			
+			document.addEventListener('keydown',function(event){
+				if(event.keyCode == 82){ //r keyCode
+					stopAudio(gameOver);
+					start();
+				}
+			}, false);
+		
+		return;
+	}
+
+		requestAnimationFrame(draw);
+	}
+
+	draw();
 }
 
-var pat1 = ctx.createPattern(bg1,"repeat");
-ctx.rect(0,0,canvasWidth,canvasHeight-baseHeight+50);
-ctx.fillStyle = pat1;
-ctx.fill();
-ctx.drawImage(base,0,canvasHeight-baseHeight+50,canvasWidth,100);
-ctx.drawImage(character,srcX,srcY,charWidth,charHeight,charX,charY,150,150);
-ctx.drawImage(hayCart,cartX,cartY,cartWidth,cartHeight);
+start();
