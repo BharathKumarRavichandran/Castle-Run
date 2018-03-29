@@ -18,43 +18,32 @@ var srcY=0;
 
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
-/*
-var bg = new Image();
-bg.src = "bg.jpg";
-var character = new Image();
-character.src = "spritesheetvolt_run.png";
-var cloud = new Image();
-cloud.src = "cloud.png";
-var pipeGreen = new Image();
-pipeGreen.src = "pipe-green.png";
-var pipeRed = new Image();
-pipeRed.src = "pipe-red.png";*/
-var test = new Image();
-test.src = "character.png";/*
 
-var gameOver = new Audio("gameOver.mp3");
-var jump = new Audio("jump.wav");
+var bg = new Image();
+var character = new Image();
+var cloud = new Image();
+var hayCart = new Image();
+var hayBundle = new Image();
+var hayFork = new Image();
+
+bg.src = "sprites/bg.jpg";
+character.src = "sprites/character.png";
+cloud.src = "sprites/cloud.png";
+hayCart = "sprites/Hay_Cart.png";
+hayBundle = "sprites/Heuballen.png";
+hayFork = "sprites/Ferskt_hay.png";
+
+
+var dead = new Audio("audio/dead.wav");
+var gameOver = new Audio("audio/gameOver.mp3");
+var jump = new Audio("audio/jump.wav");
+
 
 function stopAudio(audio) {    //Function to stop audio the current audio from playing
     audio.pause();
     audio.currentTime = 0;
 }
 
-ctx.drawImage(test,srcX,srcY,width,height,x,y,width,height);
-//ctx.drawImage(bg,0,0,canvasWidth,canvasHeight);
 
-alert("hello...testing to check errors");
-
-function updateFrame(){
-
-test.onload = function() {
- ctx.drawImage(test,100,100);
-}*/
-
-function draw(){
-	ctx.drawImage(test,srcX,srcY,width,height,x,y,width,height);	
-}
-
-setInterval(draw,100);
-
-}
+ctx.drawImage(bg,0,0,canvasWidth,canvasHeight);
+ctx.drawImage(hayCart);
