@@ -11,6 +11,7 @@ var cartWidth = 100;
 var cartHeight = 100;
 var charX = 50;
 var charY = canvasHeight-baseHeight-80;
+var charYconst = canvasHeight-baseHeight-80;
 var cartX = canvasWidth+50;
 var cartY = charY+45;
 var rows=2;
@@ -52,6 +53,7 @@ var jump = new Audio("audio/jump.wav");
 function start(){
 
 	var dx = -3;
+	var gravity = 4;
 	var pause = false;
 	var score = 0;
 
@@ -63,6 +65,7 @@ function start(){
 	score = 0;
 
 	function draw(){
+		
 		var pat1 = ctx.createPattern(bg1,"repeat");
 		ctx.rect(0,0,canvasWidth,canvasHeight-baseHeight+50);
 		ctx.fillStyle = pat1;
@@ -72,6 +75,18 @@ function start(){
 		ctx.drawImage(hayCart,cartX,cartY,cartWidth,cartHeight);
 
 		cartX += dx;
+
+		if(charY <= charYconst){
+			charY += gravity;
+		}
+
+		document.addEventListener('keydown',function(event){
+		if(event.keyCode == 32){ //spacebar keyevent
+			jump.play();
+			charY -= 2;
+		}
+
+		}, false);
 
 		if(pause==true){
 
