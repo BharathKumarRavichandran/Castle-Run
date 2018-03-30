@@ -5,6 +5,7 @@ html{
 h1{
 	color: orange; 
 	text-align: center;
+	letter-spacing: 5px;
 }
 
 canvas{
