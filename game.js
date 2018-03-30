@@ -2,7 +2,7 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
 var canvasWidth = 1300;
-var canvasHeight = 650;
+var canvasHeight = 610;
 var spriteWidth = 1400;
 var spriteHeight = 770;
 var baseWidth = 336;
