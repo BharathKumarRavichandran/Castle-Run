@@ -10,3 +10,14 @@ h1{
 canvas{
 	margin-left: 120px;
 }
+
+#foot{
+	color: white;
+	text-align: center;
+	font-size: 18px;
+	letter-spacing: 4px;
+}
+
+#heart{
+	color: red;
+}
