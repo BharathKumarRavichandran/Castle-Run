@@ -22,3 +22,8 @@ canvas{
 #heart{
 	color: red;
 }
+
+#nameLink{
+	text-decoration: none;
+	color: orange;
+}
