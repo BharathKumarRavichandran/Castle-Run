@@ -4,29 +4,29 @@ var ctx = canvas.getContext("2d");
 
 var canvasWidth = 1300;
 var canvasHeight = 610;
-var spriteWidth = 1400;
-var spriteHeight = 770;
-var baseWidth = 336;
-var baseHeight = 112;
-var cartWidth = 100;
-var cartHeight = 100;
-var charX = 50;
-var charY = canvasHeight-baseHeight-80;
-var charYconst = canvasHeight-baseHeight-80;
-var cartX;
-var cartY;
-var rows=2;
-var cols=5;
-var charWidth = spriteWidth/cols;
-var charHeight = spriteHeight/rows;
-var curFrame=0;
+var spriteWidth = 1400; //Character spritesheet's width
+var spriteHeight = 770; //Character spritesheet's height
+var baseWidth = 336; //Base ground's image width
+var baseHeight = 112; //Base ground's image height
+var cartWidth = 100; //Cart's image width
+var cartHeight = 100; //Cart's ground image's height
+var charX = 50; //Hero image's X-coordinate
+var charY = canvasHeight-baseHeight-80; //Hero image's Y-coordinate
+var charYconst = canvasHeight-baseHeight-80; //Hero image's Y-coordinate 
+var cartX; //Cart's X-coordinate
+var cartY; //Cart's Y-coordinate
+var rows=2; //No.of rows in character's spritesheet
+var cols=5; //No. of columns in character's spritesheet
+var charWidth = spriteWidth/cols; //Width of a single character image in spritesheet
+var charHeight = spriteHeight/rows; //Height of a single character image in spritesheet
+var curFrame=0; //Current frame in spritesheet
 var frameCount;
 var x=0;
 var y=0;
 var srcX=0;
 var srcY=0;
-var score = 0;
-var i = 0;
+var score = 0; //Player's score 
+var i = 0; 
 var j = 0;
 
 canvas.width = canvasWidth;
@@ -79,9 +79,9 @@ function start(){
 
 	var cartXconst = canvasWidth+Math.random()*700 ;
 	var cartYconst = charY+45;
-	var dx = -7;
+	var dx = -7; //Cart's X-velocity
 	var flag = 1;
-	var gravity = 6;
+	var gravity = 6; 
 	var pause = false;
 	var score = 0;
 
@@ -92,22 +92,22 @@ function start(){
 	    audio.currentTime = 0;
 	}
 
-	function cart(cartX,cartY){
+	function cart(cartX,cartY){ //Function which initialises, contains information about the cart 
 		this.cartX = cartX;
 		this.cartY = cartY;
 
-		this.update = function(){
+		this.update = function(){ //Function to update the cart if it goes out of the canvas
 			if(this.cartX <= -cartWidth){
 				this.cartX = canvasWidth + Math.random()*700 ;
 			}
 		}
 
-		this.collide = function(){
+		this.collide = function(){ //Function to check collision between character and the cart
 
 		}
 	}
 
-	function cartArrayInitialiser(){
+	function cartArrayInitialiser(){ //Function to add carts to cartArray
 		cartArray.push(new cart(cartXconst,cartYconst));
 		cartArray.push(new cart(cartXconst+Math.random()*700,cartYconst));
 	}
