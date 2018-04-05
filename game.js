@@ -169,6 +169,11 @@ function start(){
 		return;
 	}
 
+	requestAnimationFrame = window.mozRequestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.msRequestAnimationFrame ||
+      window.oRequestAnimationFrame;
+
 		requestAnimationFrame(draw);
 	}
 
