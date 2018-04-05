@@ -1,4 +1,5 @@
 var canvas = document.getElementById("canvas");
+var gameTitle = document.getElementById("gameTitle");
 var ctx = canvas.getContext("2d");
 
 var canvasWidth = 1300;
@@ -49,6 +50,7 @@ var gameOver = new Audio("audio/gameOver.mp3");
 var jump = new Audio("audio/jump.wav");
 
 function gameStartCard(){
+	gameTitle.innerHTML = "";
 	var pat1 = ctx.createPattern(bg1,"repeat");
 	ctx.rect(0,0,canvasWidth,canvasHeight-baseHeight+50);
 	ctx.fillStyle = pat1;
@@ -57,7 +59,7 @@ function gameStartCard(){
 	ctx.globalAlpha = 0.6;
 	ctx.fillRect(400,180,450,250);
 	ctx.globalAlpha = 1;
-	ctx.fillStyle = "red";
+	ctx.fillStyle = "ORANGE";
 	ctx.font = "70px Arial";
 	ctx.fillText("CASTLE RUN",420,250);
 	ctx.font = "25px Arial";
@@ -70,7 +72,7 @@ function gameStartCard(){
 	ctx.fillText("Press SPACEBAR to jump.",520,345);
 	ctx.fillStyle = "white";
 	ctx.font = "26px Arial";
-	ctx.fillText("Tap ENTER to start the game!",480,400);	
+	ctx.fillText("Tap ENTER to start the game!",470,400);	
 }
 
 function start(){
@@ -178,6 +180,7 @@ gameStartCard();
 
 document.addEventListener('keydown',function(event){
 		if(event.keyCode == 13){ //enter keyevent
-			start();	
+			start();
+			gameTitle.innerHTML = "CASTLE RUN";	
 		}
 		}, false);
