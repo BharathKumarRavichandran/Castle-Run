@@ -25,6 +25,7 @@ var y=0; //Y-frame number
 var srcX=0; //X-coordinate of the current frame
 var srcY=0; //Y-coordinate of the current frame
 var score = 0; //Player's score 
+var scoreControl = 0;
 var i = 0; 
 var j = 0;
 
@@ -168,11 +169,16 @@ function start(){
 		bgDrawer();
 		characterAirCheck();
 
+		scoreControl = ++scoreControl%6;
+
+		if(scoreControl==0){
+			score++;
+		}
+
 		if(jumpControl==0){
 			f = ++f%frameController;
 		}
-		if(f==0){ 
-			score++;  
+		if(f==0){  
 			updateFrame();
 		}
 		ctx.drawImage(character,srcX,srcY,charWidth,charHeight,charX,charY-20,150,150);
