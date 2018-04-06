@@ -81,8 +81,13 @@ function gameStartCard(){
 
 function start(){
 
+	var charX = 50; //Hero image's X-coordinate
+	var charY = canvasHeight-baseHeight-80; //Hero image's Y-coordinate
+	var charYconst = canvasHeight-baseHeight-80; //Hero image's Y-coordinate 
+
 	var cartXconst = canvasWidth+Math.random()*700 ;
 	var cartYconst = charY+45;
+	var charFrameWidth = 100; //Character width in each frame to check collision condition
 	var dx = -7; //Cart's X-velocity
 	var f = 0; //framechanging variable
 	var flag = 1; 
@@ -110,6 +115,9 @@ function start(){
 
 		this.collide = function(){ //Function to check collision between character and the cart
 
+			if(charX+charFrameWidth >= this.cartX && charX+charFrameWidth <= this.cartX+cartWidth && charY-20+150 >= this.cartY && charY <= this.cartY + cartHeight){
+				pause = true;
+			}
 		}
 	}
 
@@ -129,7 +137,9 @@ function start(){
 	function characterAirCheck(){ //Function to check whether the character is in air
 		if(charY <= charYconst){  
 			charY += gravity;
+			jumpControl = 1;
 		}
+
 		else{
 			jumpControl = 0;
 		}
@@ -140,6 +150,13 @@ function start(){
 		srcY = y*charHeight;
 		x = ++x%cols;
 		y = ++y%rows;
+
+		if(x==0||x==1||x==2){
+			charFrameWidth = 100;
+		}
+		else  if(x==3||x==4){
+			charFrameWidth = 80;
+		}
 	}
 
 
@@ -158,6 +175,7 @@ function start(){
 		
 		for(j=0;j<cartArray.length;j++){
 			cartArray[j].update();
+			cartArray[j].collide();
 			ctx.drawImage(hayCart,cartArray[j].cartX,cartArray[j].cartY,cartWidth,cartHeight);
 			cartArray[j].cartX += dx;
 		}
@@ -166,13 +184,8 @@ function start(){
 		if(event.keyCode == 32){ //spacebar keyevent
 			
 			jumpControl = 1;
-			flag=1;
-
-			if(flag==1){
-				jump.play();
-				charY -= 2;
-				flag=0;
-			}
+			jump.play();
+			charY -= 2;
 		}
 
 		}, false);
