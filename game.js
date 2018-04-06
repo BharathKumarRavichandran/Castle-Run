@@ -132,6 +132,9 @@ function start(){
 		ctx.fillStyle = pat1;
 		ctx.fill();
 		ctx.drawImage(base,0,canvasHeight-baseHeight+50,canvasWidth,100);
+		ctx.fillStyle = "black";
+		ctx.font = "bold 30px serif";
+		ctx.fillText("Score: "+score,1150,594);
 	}
 
 	function characterAirCheck(){ //Function to check whether the character is in air
@@ -168,7 +171,8 @@ function start(){
 		if(jumpControl==0){
 			f = ++f%frameController;
 		}
-		if(f==0){   
+		if(f==0){ 
+			score++;  
 			updateFrame();
 		}
 		ctx.drawImage(character,srcX,srcY,charWidth,charHeight,charX,charY-20,150,150);
