@@ -61,7 +61,7 @@ function gameStartCard(){
 	ctx.fill();
 	ctx.fillStyle = "#000000";
 	ctx.globalAlpha = 0.6;
-	ctx.fillRect(400,180,450,250);
+	ctx.fillRect(400,180,490,250);
 	ctx.globalAlpha = 1;
 	ctx.fillStyle = "ORANGE";
 	ctx.font = "70px Arial";
