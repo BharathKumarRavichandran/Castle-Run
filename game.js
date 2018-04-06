@@ -80,10 +80,12 @@ function start(){
 	var cartXconst = canvasWidth+Math.random()*700 ;
 	var cartYconst = charY+45;
 	var dx = -7; //Cart's X-velocity
-	var flag = 1;
+	var f = 0; //framechanging variable
+	var flag = 1; 
 	var gravity = 6; 
+	var jumpControl = 0; //To control changing of frames of character in jump
 	var pause = false;
-	var score = 0;
+	var score = 0; //Player's score
 
 	var cartArray = new Array();
 
@@ -112,6 +114,13 @@ function start(){
 		cartArray.push(new cart(cartXconst+Math.random()*700,cartYconst));
 	}
 
+	function updateFrame(){
+		srcX = x*charWidth;
+		srcY = y*charHeight;
+		x = ++x%cols;
+		y = ++y%rows;
+	}
+
 	function draw(){
 		
 		var pat1 = ctx.createPattern(bg1,"repeat");
@@ -119,7 +128,14 @@ function start(){
 		ctx.fillStyle = pat1;
 		ctx.fill();
 		ctx.drawImage(base,0,canvasHeight-baseHeight+50,canvasWidth,100);
-		ctx.drawImage(character,srcX,srcY,charWidth,charHeight,charX,charY,150,150);
+	
+		if(jumpControl==0){
+			f = ++f%6;
+		}
+		if(f==0){   
+			updateFrame();
+		}
+		ctx.drawImage(character,srcX,srcY,charWidth,charHeight,charX,charY-20,150,150);
 		
 		for(j=0;j<cartArray.length;j++){
 			cartArray[j].update();
@@ -127,13 +143,16 @@ function start(){
 			cartArray[j].cartX += dx;
 		}
 
-
-		if(charY <= charYconst){
+		if(charY <= charYconst){  //To check whether the character is in air
 			charY += gravity;
+		}
+		else{
+			jumpControl = 0;
 		}
 
 		document.addEventListener('keydown',function(event){
 		if(event.keyCode == 32){ //spacebar keyevent
+			jumpControl = 1;
 			flag=1;
 			if(flag==1){
 				jump.play();
