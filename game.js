@@ -115,7 +115,7 @@ function start(){
 
 		this.collide = function(){ //Function to check collision between character and the cart
 
-			if(charX+charFrameWidth >= this.cartX && charX+charFrameWidth <= this.cartX+cartWidth && charY-20+150 >= this.cartY && charY <= this.cartY + cartHeight){
+			if(charX+charFrameWidth >= this.cartX && charX+charFrameWidth <= this.cartX+cartWidth && charY-20+130 >= this.cartY && charY <= this.cartY + cartHeight){
 				pause = true;
 			}
 		}
@@ -207,8 +207,10 @@ function start(){
 			
 			document.addEventListener('keydown',function(event){
 				if(event.keyCode == 82){ //r keyCode
-					stopAudio(gameOver);
-					start();
+					if(pause == true){
+						stopAudio(gameOver);
+						start();
+					}	
 				}
 			}, false);
 		
