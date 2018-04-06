@@ -44,10 +44,15 @@ bg2.src = "sprites/dark_bricks.png";
 character.src = "sprites/character.png";
 hayCart.src = "sprites/Hay_Cart.png";
 
-
 var dead = new Audio("audio/dead.wav");
 var gameOver = new Audio("audio/gameOver.mp3");
 var jump = new Audio("audio/jump.wav");
+
+var requestAnimationFrame = window.mozRequestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.msRequestAnimationFrame ||
+      window.oRequestAnimationFrame;
+
 
 function gameStartCard(){
 	gameTitle.innerHTML = "";
@@ -114,6 +119,23 @@ function start(){
 		cartArray.push(new cart(cartXconst+Math.random()*700,cartYconst));
 	}
 
+	function bgDrawer(){
+		var pat1 = ctx.createPattern(bg1,"repeat");
+		ctx.rect(0,0,canvasWidth,canvasHeight-baseHeight+50);
+		ctx.fillStyle = pat1;
+		ctx.fill();
+		ctx.drawImage(base,0,canvasHeight-baseHeight+50,canvasWidth,100);
+	}
+
+	function characterAirCheck(){
+		if(charY <= charYconst){  //To check whether the character is in air
+			charY += gravity;
+		}
+		else{
+			jumpControl = 0;
+		}
+	}
+
 	function updateFrame(){
 		srcX = x*charWidth;
 		srcY = y*charHeight;
@@ -121,14 +143,12 @@ function start(){
 		y = ++y%rows;
 	}
 
+
 	function draw(){
-		
-		var pat1 = ctx.createPattern(bg1,"repeat");
-		ctx.rect(0,0,canvasWidth,canvasHeight-baseHeight+50);
-		ctx.fillStyle = pat1;
-		ctx.fill();
-		ctx.drawImage(base,0,canvasHeight-baseHeight+50,canvasWidth,100);
 	
+		bgDrawer();
+		characterAirCheck();
+
 		if(jumpControl==0){
 			f = ++f%6;
 		}
@@ -143,14 +163,7 @@ function start(){
 			cartArray[j].cartX += dx;
 		}
 
-		if(charY <= charYconst){  //To check whether the character is in air
-			charY += gravity;
-		}
-		else{
-			jumpControl = 0;
-		}
-
-		document.addEventListener('keydown',function(event){
+		document.addEventListener('keydown',function(event){ //JUMP eventlistener
 		if(event.keyCode == 32){ //spacebar keyevent
 			jumpControl = 1;
 			flag=1;
@@ -163,7 +176,7 @@ function start(){
 
 		}, false);
 
-		if(pause==true){
+		if(pause==true){  //To check whether the game is over
 
 			ctx.fillStyle = "#000000";
 			ctx.globalAlpha = 0.6;
@@ -187,12 +200,6 @@ function start(){
 		
 		return;
 	}
-
-	requestAnimationFrame = window.mozRequestAnimationFrame ||
-      window.webkitRequestAnimationFrame ||
-      window.msRequestAnimationFrame ||
-      window.oRequestAnimationFrame;
-
 		requestAnimationFrame(draw);
 	}
 
