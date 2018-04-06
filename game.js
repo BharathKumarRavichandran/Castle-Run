@@ -2,8 +2,8 @@ var canvas = document.getElementById("canvas");
 var gameTitle = document.getElementById("gameTitle");
 var ctx = canvas.getContext("2d");
 
-var canvasWidth = 1300;
-var canvasHeight = 610;
+var canvasWidth = 1300; //Canvas's width
+var canvasHeight = 610; //Canvas's Height
 var spriteWidth = 1400; //Character spritesheet's width
 var spriteHeight = 770; //Character spritesheet's height
 var baseWidth = 336; //Base ground's image width
@@ -19,12 +19,11 @@ var rows=2; //No.of rows in character's spritesheet
 var cols=5; //No. of columns in character's spritesheet
 var charWidth = spriteWidth/cols; //Width of a single character image in spritesheet
 var charHeight = spriteHeight/rows; //Height of a single character image in spritesheet
-var curFrame=0; //Current frame in spritesheet
-var frameCount;
-var x=0;
-var y=0;
-var srcX=0;
-var srcY=0;
+var frameController = 6; //Speed in which frame should be changed
+var x=0; //X-frame number
+var y=0; //Y-frame number
+var srcX=0; //X-coordinate of the current frame
+var srcY=0; //Y-coordinate of the current frame
 var score = 0; //Player's score 
 var i = 0; 
 var j = 0;
@@ -127,8 +126,8 @@ function start(){
 		ctx.drawImage(base,0,canvasHeight-baseHeight+50,canvasWidth,100);
 	}
 
-	function characterAirCheck(){
-		if(charY <= charYconst){  //To check whether the character is in air
+	function characterAirCheck(){ //Function to check whether the character is in air
+		if(charY <= charYconst){  
 			charY += gravity;
 		}
 		else{
@@ -150,7 +149,7 @@ function start(){
 		characterAirCheck();
 
 		if(jumpControl==0){
-			f = ++f%6;
+			f = ++f%frameController;
 		}
 		if(f==0){   
 			updateFrame();
@@ -165,8 +164,10 @@ function start(){
 
 		document.addEventListener('keydown',function(event){ //JUMP eventlistener
 		if(event.keyCode == 32){ //spacebar keyevent
+			
 			jumpControl = 1;
 			flag=1;
+
 			if(flag==1){
 				jump.play();
 				charY -= 2;
