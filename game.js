@@ -85,7 +85,7 @@ function start(){
 	var charX = 50; //Hero image's X-coordinate
 	var charY = canvasHeight-baseHeight-80; //Hero image's Y-coordinate
 	var charYconst = canvasHeight-baseHeight-80; //Hero image's Y-coordinate 
-
+	var velocity=0;
 	var cartXconst = canvasWidth+Math.random()*700 ;
 	var cartYconst = charY+45;
 	var charFrameWidth = 100; //Character width in each frame to check collision condition
@@ -96,6 +96,7 @@ function start(){
 	var jumpControl = 0; //To control changing of frames of character in jump
 	var pause = false;
 	var score = 0; //Player's score
+	var isInAir=false;
 
 	var cartArray = new Array();
 
@@ -139,12 +140,15 @@ function start(){
 	}
 
 	function characterAirCheck(){ //Function to check whether the character is in air
-		if(charY <= charYconst){  
-			charY += gravity;
+		if(charY < charYconst && isInAir ){  
+			charY += velocity;
+			velocity+=2;
 			jumpControl = 1;
 		}
 
 		else{
+			velocity=0;
+			charY=charYconst;
 			jumpControl = 0;
 		}
 	}
@@ -162,13 +166,25 @@ function start(){
 			charFrameWidth = 80;
 		}
 	}
+	document.addEventListener('keyup',function(event){ //JUMP eventlistener
+		console.log(charY);
+		console.log(charYconst);
+		if(event.keyCode == 32 && charY==charYconst){ //spacebar keyevent
+			console.log('rigvedsukkok');
+			jumpControl = 1;
+			jump.play();
+			velocity=-40;
+			isInAir=true;
+		}
+
+		}, false);
 
 
 	function draw(){
 	
 		bgDrawer();
 		characterAirCheck();
-
+		
 		scoreControl = ++scoreControl%6;
 
 		if(scoreControl==0){
@@ -189,16 +205,6 @@ function start(){
 			ctx.drawImage(hayCart,cartArray[j].cartX,cartArray[j].cartY,cartWidth,cartHeight);
 			cartArray[j].cartX += dx;
 		}
-
-		document.addEventListener('keydown',function(event){ //JUMP eventlistener
-		if(event.keyCode == 32){ //spacebar keyevent
-			
-			jumpControl = 1;
-			jump.play();
-			charY -= 2;
-		}
-
-		}, false);
 
 		if(pause==true){  //To check whether the game is over
 
