@@ -28,6 +28,7 @@ var score = 0; //Player's score
 var scoreControl = 0;
 var i = 0; 
 var j = 0;
+var jumpHeight = 300;
 
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
@@ -67,18 +68,27 @@ function gameStartCard(){
 	ctx.fillStyle = "ORANGE";
 	ctx.font = "70px Arial";
 	ctx.fillText("CASTLE RUN",420,250);
-	ctx.font = "25px Arial";
-	ctx.globalAlpha = 0.7;
-	ctx.fillStyle = "red";
-	ctx.fillText("Run till you live!",550,300);
-	ctx.globalAlpha = 1;
-	ctx.font = "20px Arial";
-	ctx.fillStyle = "green";
-	ctx.fillText("Press SPACEBAR to jump.",520,345);
+	ctx.font = "22px Arial";
+	ctx.fillStyle = "lightblue";
+	ctx.fillText("Press SPACEBAR to jump.",520,330);
 	ctx.fillStyle = "white";
-	ctx.font = "26px Arial";
-	ctx.fillText("Tap ENTER to start the game!",470,400);	
+	ctx.font = "18px Arial";
+	ctx.fillText("You can jump only when you are on the ground",450,390);
+	ctx.font = "20px Arial";
+	ctx.fillStyle = "red";
+	ctx.fillText("Run till you live!",565,440);
+	ctx.globalAlpha = 1;
+	ctx.font = "29px bold Arial";
+	ctx.fillStyle = "white";
+	ctx.fillText("Tap ENTER to start the game!",470,500);	
 }
+
+document.addEventListener('keydown',function(event){
+	if(event.keyCode == 13){ //enter keyevent
+		start();
+		gameTitle.innerHTML = "CASTLE RUN";	
+	}
+	}, false);
 
 function start(){
 
@@ -95,6 +105,7 @@ function start(){
 	var gravity = 6; 
 	var jumpControl = 0; //To control changing of frames of character in jump
 	var pause = false;
+	var onAir = false;
 	var score = 0; //Player's score
 
 	var cartArray = new Array();
@@ -140,11 +151,13 @@ function start(){
 
 	function characterAirCheck(){ //Function to check whether the character is in air
 		if(charY <= charYconst){  
+			onAir=true;
 			charY += gravity;
 			jumpControl = 1;
 		}
 
 		else{
+			onAir=false;
 			jumpControl = 0;
 		}
 	}
@@ -163,11 +176,61 @@ function start(){
 		}
 	}
 
+	function characterDraw(){
+		ctx.drawImage(character,srcX,srcY,charWidth,charHeight,charX,charY-20,150,150);
+	}
+
+	function cartDraw(){
+		for(j=0;j<cartArray.length;j++){
+			cartArray[j].update();
+			cartArray[j].collide();
+			ctx.drawImage(hayCart,cartArray[j].cartX,cartArray[j].cartY,cartWidth,cartHeight);
+			cartArray[j].cartX += dx;
+		}		
+
+	}
+
+	function gameOverFunction(){
+		onAir=true;//
+		ctx.fillStyle = "#000000";
+		ctx.globalAlpha = 0.6;
+		ctx.fillRect(400,180,450,250);
+		ctx.globalAlpha = 1;
+		ctx.fillStyle = "#FF0000";
+		ctx.font = "35px Arial";
+		ctx.fillText("GAME OVER",520,250);
+		ctx.font = "25px Arial";
+		ctx.fillStyle = "#FFFFFF";
+		ctx.fillText("Score : "+score,570,300);
+		ctx.fillText("Press R to restart",530,350);
+		dead.play();
+	}
+
+	document.addEventListener('keydown',function(event){ //JUMP eventlistener
+		if(event.keyCode==32&&onAir==false){ //spacebar keyevent
+			
+			jumpControl = 1;
+			jump.play();
+			charY -= jumpHeight;
+		}
+		}, false);	
+
+	document.addEventListener('keydown',function(event){
+		if(event.keyCode == 82){ //r keyCode
+			if(pause == true){
+				stopAudio(gameOver);
+				window.location.reload();
+			}	
+		}
+	}, false);
+
 
 	function draw(){
 	
 		bgDrawer();
 		characterAirCheck();
+		characterDraw();
+		cartDraw();
 
 		scoreControl = ++scoreControl%6;
 
@@ -178,53 +241,14 @@ function start(){
 		if(jumpControl==0){
 			f = ++f%frameController;
 		}
+
 		if(f==0){  
 			updateFrame();
 		}
-		ctx.drawImage(character,srcX,srcY,charWidth,charHeight,charX,charY-20,150,150);
-		
-		for(j=0;j<cartArray.length;j++){
-			cartArray[j].update();
-			cartArray[j].collide();
-			ctx.drawImage(hayCart,cartArray[j].cartX,cartArray[j].cartY,cartWidth,cartHeight);
-			cartArray[j].cartX += dx;
-		}
-
-		document.addEventListener('keydown',function(event){ //JUMP eventlistener
-		if(event.keyCode == 32){ //spacebar keyevent
-			
-			jumpControl = 1;
-			jump.play();
-			charY -= 2;
-		}
-
-		}, false);
 
 		if(pause==true){  //To check whether the game is over
-
-			ctx.fillStyle = "#000000";
-			ctx.globalAlpha = 0.6;
-			ctx.fillRect(400,180,450,250);
-			ctx.globalAlpha = 1;
-			ctx.fillStyle = "#FF0000";
-			ctx.font = "35px Arial";
-			ctx.fillText("GAME OVER",520,250);
-			ctx.font = "25px Arial";
-			ctx.fillStyle = "#FFFFFF";
-			ctx.fillText("Score : "+score,570,300);
-			ctx.fillText("Press R to restart",530,350);
-			dead.play();
-			
-			document.addEventListener('keydown',function(event){
-				if(event.keyCode == 82){ //r keyCode
-					if(pause == true){
-						stopAudio(gameOver);
-						start();
-					}	
-				}
-			}, false);
-		
-		return;
+			gameOverFunction();
+			return;
 	}
 		requestAnimationFrame(draw);
 	}
@@ -234,10 +258,3 @@ function start(){
 }
 
 gameStartCard();
-
-document.addEventListener('keydown',function(event){
-		if(event.keyCode == 13){ //enter keyevent
-			start();
-			gameTitle.innerHTML = "CASTLE RUN";	
-		}
-		}, false);
